@@ -46,25 +46,23 @@ names<-read.table("./features.txt")
 
 names<-names[,2]
 names<-as.vector(names)
-indice_mean<-grep("mean",names,ignore.case = TRUE)
+indice_mean<-grep("mean",names)
 #create a vector title_column with all the titles which contains "mean"
 column_title<-vector();id<-vector();label<-vector()
 
 
-indice_std<-grep("std",names,ignore.case = TRUE)
+indice_std<-grep("std",names)
 #create a vector title_column with all the titles which contains "std"
 
 
 all_indices<-sort(c(indice_mean,indice_std))
-
-#create a vector with all relevant names of variables
 
 relevant_column_title<-sapply(all_indices,function(x) names[x])
 
 all_indices<-sapply(all_indices,function(x) x+2) #add 2 because of id and label
 merge_test_train<-merge_test_train[,c(1,2,all_indices)]
 
-colnames(merge_test_train)[1:ncol(merge_test_train)]<-c("id_subject","label",relevant_column_title)
+colnames(merge_test_train)<-c("id_subject","label",relevant_column_title)
 
 
 ## replace activiy labels
@@ -96,7 +94,7 @@ new_merge_test_train<-merge_test_train
 final_data<-new_merge_test_train %>% group_by(id_subject,label) %>% summarise_each(funs(mean))
 
 #I write the result in a txt file
-write.table(final_data,file="./tidy_data.txt",row.name=FALSE,sep=" ")
+write.table(final_data,file="./tidy_data2.txt",row.name=FALSE,sep=" ")
 
 
 
